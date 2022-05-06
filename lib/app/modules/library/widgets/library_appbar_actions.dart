@@ -15,29 +15,36 @@ class LibraryAppBarActions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() => Row(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisSize: MainAxisSize.max,
           children: [
             controller.isSearching
                 ? Container(
-                    padding: EdgeInsets.all(8.0),
-                    width: min(context.width * .5, 300),
-                    child: TextField(
-                      controller: controller.textEditingController,
-                      autofocus: true,
-                      decoration: InputDecoration(
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            Icons.close,
+                    padding: EdgeInsets.only(top: 6.0, bottom: 6.0, right: 0),
+                    width: min(context.width * .5, 800),
+                    child: Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                      child: TextField(
+                        controller: controller.textEditingController,
+                        autofocus: true,
+                        decoration: InputDecoration(
+                          suffixIcon: IconButton(
+                            padding: const EdgeInsets.only(right: 0),
+                            alignment: Alignment.centerRight,
+                            icon: Icon(
+                              Icons.close,
+                            ),
+                            onPressed: () {
+                              controller.isSearching = false;
+                              controller.textEditingController.clear();
+                            },
                           ),
-                          onPressed: () {
-                            controller.isSearching = false;
-                            controller.textEditingController.clear();
-                          },
+                          border: UnderlineInputBorder(),
+                          // hintText: LocaleKeys.libraryScreen_mangaSearch.tr,
                         ),
-                        border: OutlineInputBorder(),
-                        hintText: LocaleKeys.libraryScreen_mangaSearch.tr,
                       ),
-                    ))
+                    ),
+                  )
                 : IconButton(
                     onPressed: () => controller.isSearching = true,
                     icon: Icon(Icons.search_rounded),
@@ -104,5 +111,37 @@ class LibraryAppBarActions extends StatelessWidget {
             ),
           ],
         ));
+  }
+}
+
+class MyseachDelegate extends SearchDelegate {
+  @override
+  List<Widget>? buildActions(BuildContext context) => [
+        IconButton(
+          onPressed: () {
+            if (query.isEmpty) {
+              close(context, null);
+            } else {
+              query = '';
+            }
+          },
+          icon: const Icon(Icons.clear),
+        ),
+      ];
+
+  @override
+  Widget? buildLeading(BuildContext context) => IconButton(
+        onPressed: () => close(context, null),
+        icon: const Icon(Icons.arrow_back),
+      );
+
+  @override
+  Widget buildResults(BuildContext context) {
+    return Container();
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    return Container();
   }
 }

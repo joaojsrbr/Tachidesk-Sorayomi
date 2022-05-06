@@ -17,68 +17,71 @@ class SmallScreenNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScrollToHideWidgetState(
-      scrollcontroller: controller.scrollController,
-      child: NavigationBarTheme(
-        data: NavigationBarThemeData(
-          labelTextStyle: MaterialStateProperty.all(
-            const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+    return GetBuilder<HomeController>(
+      builder: (controller) => ScrollToHideWidgetState(
+        scrollcontroller: controller.scrollController,
+        child: NavigationBarTheme(
+          data: NavigationBarThemeData(
+            labelTextStyle: MaterialStateProperty.all(
+              const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+            ),
           ),
-        ),
-        child: Obx(
-          () => NavigationBar(
-            height: 60,
-            backgroundColor: Theme.of(context).colorScheme.background,
-            labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
-            selectedIndex: controller.selectedIndex,
-            onDestinationSelected: (value) => controller.selectedIndex = value,
-            destinations: <Widget>[
-              NavigationDestination(
-                selectedIcon: Icon(
-                  Icons.collections_bookmark_rounded,
+          child: Obx(
+            () => NavigationBar(
+              height: 60,
+              backgroundColor: Theme.of(context).colorScheme.background,
+              labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+              selectedIndex: controller.selectedIndex,
+              onDestinationSelected: (value) =>
+                  controller.selectedIndex = value,
+              destinations: <Widget>[
+                NavigationDestination(
+                  selectedIcon: Icon(
+                    Icons.collections_bookmark_rounded,
+                  ),
+                  label: navigationBarTitles[0].tr,
+                  icon: Icon(
+                    Icons.collections_bookmark_outlined,
+                  ),
                 ),
-                label: navigationBarTitles[0].tr,
-                icon: Icon(
-                  Icons.collections_bookmark_outlined,
+                NavigationDestination(
+                  selectedIcon: Icon(
+                    Icons.new_releases_rounded,
+                  ),
+                  label: navigationBarTitles[1].tr,
+                  icon: Icon(
+                    Icons.new_releases_outlined,
+                  ),
                 ),
-              ),
-              NavigationDestination(
-                selectedIcon: Icon(
-                  Icons.new_releases_rounded,
+                NavigationDestination(
+                  selectedIcon: Icon(
+                    Icons.explore_rounded,
+                  ),
+                  label: navigationBarTitles[2].tr,
+                  icon: Icon(
+                    Icons.explore_outlined,
+                  ),
                 ),
-                label: navigationBarTitles[1].tr,
-                icon: Icon(
-                  Icons.new_releases_outlined,
+                NavigationDestination(
+                  selectedIcon: Icon(
+                    Icons.download_rounded,
+                  ),
+                  label: navigationBarTitles[3].tr,
+                  icon: Icon(
+                    Icons.download_outlined,
+                  ),
                 ),
-              ),
-              NavigationDestination(
-                selectedIcon: Icon(
-                  Icons.explore_rounded,
+                NavigationDestination(
+                  selectedIcon: Icon(
+                    Icons.more_horiz_rounded,
+                  ),
+                  label: navigationBarTitles[4].tr,
+                  icon: Icon(
+                    Icons.more_horiz_outlined,
+                  ),
                 ),
-                label: navigationBarTitles[2].tr,
-                icon: Icon(
-                  Icons.explore_outlined,
-                ),
-              ),
-              NavigationDestination(
-                selectedIcon: Icon(
-                  Icons.download_rounded,
-                ),
-                label: navigationBarTitles[3].tr,
-                icon: Icon(
-                  Icons.download_outlined,
-                ),
-              ),
-              NavigationDestination(
-                selectedIcon: Icon(
-                  Icons.more_horiz_rounded,
-                ),
-                label: navigationBarTitles[4].tr,
-                icon: Icon(
-                  Icons.more_horiz_outlined,
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -177,22 +180,22 @@ class ScrollToHideWidgetStateController extends GetxController {
     super.dispose();
   }
 
-  // void listen() {
-  //   if (scrollcontroller.position.pixels >= 68) {
-  //     hide();
-  //   } else {
-  //     show();
-  //   }
-  // }
-
   void listen() {
-    final direction = scrollcontroller.position.userScrollDirection;
-    if (direction == ScrollDirection.forward) {
-      show();
-    } else if (direction == ScrollDirection.reverse) {
+    if (scrollcontroller.position.pixels >= 68) {
       hide();
+    } else {
+      show();
     }
   }
+
+  // void listen() {
+  //   final direction = scrollcontroller.position.userScrollDirection;
+  //   if (direction == ScrollDirection.forward) {
+  //     show();
+  //   } else if (direction == ScrollDirection.reverse) {
+  //     hide();
+  //   }
+  // }
 
   void show() {
     if (!isVisible.value) {

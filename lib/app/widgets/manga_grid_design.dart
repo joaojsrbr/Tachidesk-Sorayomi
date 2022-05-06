@@ -14,9 +14,11 @@ class MangaGridDesign extends StatelessWidget {
     required this.manga,
     this.isLibraryScreen = false,
     this.onTap,
+    this.colorBlendMode,
     this.onDoubleTap,
   }) : super(key: key);
   final Manga manga;
+  final BlendMode? colorBlendMode;
   final void Function()? onTap;
   final void Function()? onDoubleTap;
   final bool isLibraryScreen;
@@ -112,6 +114,8 @@ class MangaGridDesign extends StatelessWidget {
           child: manga.thumbnailUrl != null && manga.thumbnailUrl!.isNotEmpty
               ? Container(
                   child: CachedNetworkImage(
+                    color: Colors.black.withOpacity(0.29),
+                    colorBlendMode: colorBlendMode,
                     imageUrl: localStorageService.baseURL +
                         manga.thumbnailUrl.toString(),
                     fit: BoxFit.cover,
@@ -151,15 +155,6 @@ class MangaGridDesign extends StatelessWidget {
                                 color: Get.theme.canvasColor.withOpacity(.5))
                           ]
                         : null,
-                    gradient: LinearGradient(
-                      begin: Alignment.center,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Get.theme.canvasColor.withOpacity(0),
-                        Get.theme.canvasColor.withOpacity(0.4),
-                        Get.theme.canvasColor.withOpacity(0.9),
-                      ],
-                    ),
                   ),
                 )
               : SizedBox(

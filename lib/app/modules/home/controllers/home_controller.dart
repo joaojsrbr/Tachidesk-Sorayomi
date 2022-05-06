@@ -44,8 +44,13 @@ class HomeController extends GetxController {
   }
 
   @override
-  void onReady() async {
+  void onClose() {
     scrollController.dispose();
+    super.onClose();
+  }
+
+  @override
+  void onReady() async {
     Version? newRelease = await _localStorageService.checkUpdate();
     if (newRelease != null) {
       appUpdateDialog(newRelease);

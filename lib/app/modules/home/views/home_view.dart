@@ -33,6 +33,7 @@ class HomeView extends GetView<HomeController> {
               navigationBarTitles: navigationBarTitles,
             ),
       body: NestedScrollView(
+        // controller: controller.scrollController,
         body: PageView(
           controller: controller.pageController,
           physics: NeverScrollableScrollPhysics(),
