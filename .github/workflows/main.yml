@@ -25,7 +25,7 @@ jobs:
           flutter-version: ${{env.FLUTTER_VERSION}}
       - run: flutter pub get
       - run: flutter analyze
-      - run: flutter build apk --release
+      - run: flutter build apk --split-per-abi --release
       - name: Push to Releases
         uses: ncipollo/release-action@v1
         with:
