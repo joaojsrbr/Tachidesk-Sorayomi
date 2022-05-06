@@ -20,10 +20,11 @@ class HomeController extends GetxController {
   final LocalStorageService _localStorageService =
       Get.find<LocalStorageService>();
   final PageController _pageController = PageController();
-  final RxInt _selectedIndex = 0.obs;
   late ScrollController scrollController;
-  final RxBool _expandedState = false.obs;
+  final RxInt _selectedIndex = 0.obs;
 
+  final RxBool _expandedState = false.obs;
+  RxInt indexscreen = 0.obs;
   PageController get pageController => _pageController;
 
   int get selectedIndex => _selectedIndex.value;
@@ -33,20 +34,29 @@ class HomeController extends GetxController {
   bool get expandedState => _expandedState.value;
   set expandedState(bool value) => _expandedState.value = value;
 
+  downloadCondition(value) {
+    indexscreen.value = value;
+  }
+
   @override
   void onInit() {
     _selectedIndex.listen((index) {
       pageController.jumpToPage(index);
     });
     scrollController = ScrollController()..addListener(() => update());
-
     super.onInit();
   }
 
   @override
-  void onReady() async {
+  void onClose() {
     scrollController.dispose();
+    super.onClose();
+  }
+
+  @override
+  void onReady() async {
     Version? newRelease = await _localStorageService.checkUpdate();
+
     if (newRelease != null) {
       appUpdateDialog(newRelease);
     }
