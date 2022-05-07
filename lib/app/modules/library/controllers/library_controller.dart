@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -102,6 +104,19 @@ class LibraryController extends GetxController
       animationDuration: Duration(),
     );
     super.onInit();
+  }
+
+  String randomName() {
+    final rand = Random();
+    return [
+      '¯\\_(ツ)_/¯',
+      '(･o･;)',
+      'Σ(ಠ_ಠ)',
+      'ಥ_ಥ',
+      '(˘･_･˘)',
+      '(；￣Д￣)',
+      '(･Д･。',
+    ].elementAt(rand.nextInt(7));
   }
 
   @override

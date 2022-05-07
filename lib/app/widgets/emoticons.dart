@@ -4,14 +4,18 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
-const errorFaces = [
-  '(･o･;)',
-  'Σ(ಠ_ಠ)',
-  'ಥ_ಥ',
-  '(˘･_･˘)',
-  '(；￣Д￣)',
-  '(･Д･。',
-];
+String randomName() {
+  final rand = Random();
+  return [
+    '¯\\_(ツ)_/¯',
+    '(･o･;)',
+    'Σ(ಠ_ಠ)',
+    'ಥ_ಥ',
+    '(˘･_･˘)',
+    '(；￣Д￣)',
+    '(･Д･。',
+  ].elementAt(rand.nextInt(7));
+}
 
 class EmoticonsView extends StatelessWidget {
   const EmoticonsView({
@@ -29,7 +33,7 @@ class EmoticonsView extends StatelessWidget {
       children: [
         ListTile(
           title: Text(
-            errorFaces[Random().nextInt(6)],
+            randomName(),
             textAlign: TextAlign.center,
             style: Get.textTheme.headlineLarge,
           ),

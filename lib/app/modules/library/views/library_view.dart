@@ -16,25 +16,27 @@ import '../controllers/library_controller.dart';
 class LibraryView extends GetView<LibraryController> {
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<HomeController>(
-      builder: (c) => Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.background,
-        body: NestedScrollView(
-          controller: c.scrollController,
-          body: Obx(
-            () => controller.categoryListLength >= 1
-                ? TabBarView(
-                    controller: controller.tabController,
-                    physics: const BouncingScrollPhysics(),
-                    children: controller.categoryList.map<Widget>(
-                      (e) {
-                        int index = controller.categoryList.indexOf(e);
-                        List<Manga>? mangaList =
-                            controller.categoryMangaMap[index];
-                        return mangaList != null && mangaList.isNotEmpty
-                            ? GridView.builder(
+    final _ = Get.find<HomeController>();
+    return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
+      body: NestedScrollView(
+        controller: _.scrollController,
+        body: Obx(
+          () => controller.categoryListLength >= 1
+              ? TabBarView(
+                  controller: controller.tabController,
+                  physics: const BouncingScrollPhysics(),
+                  children: controller.categoryList.map<Widget>(
+                    (e) {
+                      int index = controller.categoryList.indexOf(e);
+                      List<Manga>? mangaList =
+                          controller.categoryMangaMap[index];
+                      return mangaList != null && mangaList.isNotEmpty
+                          ? GetBuilder<HomeController>(
+                              builder: (controller) => GridView.builder(
                                 // controller: c.scrollController,
                                 shrinkWrap: true,
+
                                 padding: EdgeInsets.only(
                                     right: 4, left: 4, top: 2, bottom: 2),
                                 gridDelegate:
@@ -54,78 +56,73 @@ class LibraryView extends GetView<LibraryController> {
                                   ),
                                   isLibraryScreen: true,
                                 ),
-                              )
-                            : (controller.isLoading
-                                ? Center(
-                                    child: CircularProgressIndicator(),
-                                  )
-                                : EmoticonsView(
-                                    text: "${LocaleKeys.no.tr} "
-                                        "${LocaleKeys.libraryScreen_manga.tr}",
-                                    button: TextButton.icon(
-                                      onPressed: () => controller
-                                          .loadMangaListWithCategoryId(),
-                                      style: TextButton.styleFrom(),
-                                      icon: Icon(Icons.refresh),
-                                      label: Text(
-                                        LocaleKeys.libraryScreen_refresh.tr,
-                                      ),
-                                    ),
-                                  ));
-                      },
-                    ).toList(),
-                  )
-                : (controller.isCategoryLoading
-                    ? Center(
-                        child: CircularProgressIndicator(),
-                      )
-                    : EmoticonsView(
-                        text: "${LocaleKeys.no.tr} "
-                            "${LocaleKeys.libraryScreen_manga.tr}",
-                        button: TextButton.icon(
-                          onPressed: () => controller.refreshLibraryScreen(),
-                          style: TextButton.styleFrom(),
-                          icon: Icon(Icons.refresh),
-                          label: Text(
-                            LocaleKeys.libraryScreen_refresh.tr,
-                          ),
-                        ),
-                      )),
-          ),
-          physics: BouncingScrollPhysics(),
-          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-            return [
-              SliverAppBar(
-                toolbarHeight: 70,
-
-                pinned: true,
-                floating: true,
-                actions: [
-                  Obx(() => c.selectedIndex == 0
-                      ? LibraryAppBarActions()
-                      : SizedBox()),
-                  Obx(() =>
-                      c.selectedIndex == 2 ? BrowseAppBarActions() : SizedBox())
-                ],
-                // pinned: true,
-                // floating: true,
-                title: Text(navigationBarTitles[0].tr),
-                bottom: controller.categoryListLength <= 1
-                    ? null
-                    : TabBar(
-                        controller: controller.tabController,
-                        isScrollable: true,
-                        indicatorSize: TabBarIndicatorSize.label,
-                        indicatorColor: Theme.of(context).colorScheme.primary,
-                        // padding: EdgeInsets.all(8),
-                        tabs: controller.categoryList
-                            .map<Tab>((e) => Tab(text: e?.name ?? ""))
-                            .toList(),
-                      ),
-              ),
-            ];
-          },
+                              ),
+                            )
+                          : (controller.isLoading
+                              ? Center(
+                                  child: CircularProgressIndicator(),
+                                )
+                              : EmoticonsView(
+                                  text: "${LocaleKeys.no.tr} "
+                                      "${LocaleKeys.libraryScreen_manga.tr}",
+                                ));
+                    },
+                  ).toList(),
+                )
+              : (controller.isCategoryLoading
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : EmoticonsView(
+                      text: "${LocaleKeys.no.tr} "
+                          "${LocaleKeys.libraryScreen_manga.tr}",
+                    )),
         ),
+        //     button: TextButton.icon(
+        //       onPressed: () => controller.refreshLibraryScreen(),
+        //       style: TextButton.styleFrom(),
+        //       icon: Icon(Icons.refresh),
+        //       label: Text(
+        //         LocaleKeys.libraryScreen_refresh.tr,
+        //       ),
+        //     ),
+        //   )),
+        physics: BouncingScrollPhysics(),
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return [
+            SliverAppBar(
+              toolbarHeight: 70,
+              elevation: 0,
+              pinned: true,
+              floating: true,
+              actions: [
+                IconButton(
+                    enableFeedback: false,
+                    onPressed: () => controller.refreshLibraryScreen(),
+                    icon: Icon(Icons.refresh)),
+                Obx(() =>
+                    _.selectedIndex == 0 ? LibraryAppBarActions() : SizedBox()),
+                Obx(() =>
+                    _.selectedIndex == 2 ? BrowseAppBarActions() : SizedBox())
+              ],
+              // pinned: true,
+              // floating: true,
+              title: Text(navigationBarTitles[0].tr),
+              bottom: controller.categoryListLength <= 1
+                  ? null
+                  : TabBar(
+                      controller: controller.tabController,
+                      isScrollable: true,
+                      indicatorSize: TabBarIndicatorSize.label,
+                      indicatorColor: Theme.of(context).colorScheme.primary,
+                      // padding: EdgeInsets.all(8),
+                      tabs: controller.categoryList
+                          .map<Tab>((e) => Tab(text: e?.name ?? ""))
+                          .toList(),
+                    ),
+            ),
+          ];
+        },
       ),
     );
     //  Scaffold(
