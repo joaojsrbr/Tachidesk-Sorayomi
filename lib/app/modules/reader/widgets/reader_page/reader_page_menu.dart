@@ -23,57 +23,55 @@ class ReaderPageMenu extends StatelessWidget {
   final Map<String, String>? headers;
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ListTile(
-            leading: Icon(Icons.save_alt_rounded),
-            title: Text("Save"),
-            onTap: () async {
-              if (Platform.isAndroid) {
-                if (!await launchUrl(
-                  Uri.parse(controller.getChapterPage(pageNumber)),
-                  mode: LaunchMode.externalApplication,
-                )) {
-                  Clipboard.setData(
-                    ClipboardData(text: controller.getChapterPage(pageNumber)),
-                  );
-                  Get.rawSnackbar(
-                    title: LocaleKeys.error_launchURL_title.trParams({
-                      "website": LocaleKeys.appTitle.tr,
-                    }),
-                    message: LocaleKeys.error_launchURL_message.trParams(
-                      {"url": controller.getChapterPage(pageNumber)},
-                    ),
-                  );
-                }
-              } else {
-                final File file = await controller.cacheManager.getSingleFile(
-                  controller.getChapterPage(pageNumber),
-                  headers: headers,
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        ListTile(
+          leading: Icon(Icons.save_alt_rounded),
+          title: Text("Save"),
+          onTap: () async {
+            if (Platform.isAndroid) {
+              if (!await launchUrl(
+                Uri.parse(controller.getChapterPage(pageNumber)),
+                mode: LaunchMode.externalApplication,
+              )) {
+                Clipboard.setData(
+                  ClipboardData(text: controller.getChapterPage(pageNumber)),
                 );
-                final imageName =
-                    "${controller.manga.title ?? controller.mangaId}"
-                    "_${controller.chapterIndex}_$pageNumber";
-                final appDir = await getApplicationDocumentsDirectory();
-
-                final localPath = join(appDir.path, imageName);
-
-                final imageFile = File(localPath);
-                await imageFile.writeAsBytes(file.readAsBytesSync());
-
-                Clipboard.setData(ClipboardData(text: localPath));
-                Get.back();
                 Get.rawSnackbar(
-                  title: LocaleKeys.readerScreen_savedImagePathTitle.tr,
-                  message: localPath,
+                  title: LocaleKeys.error_launchURL_title.trParams({
+                    "website": LocaleKeys.appTitle.tr,
+                  }),
+                  message: LocaleKeys.error_launchURL_message.trParams(
+                    {"url": controller.getChapterPage(pageNumber)},
+                  ),
                 );
               }
-            },
-          )
-        ],
-      ),
+            } else {
+              final File file = await controller.cacheManager.getSingleFile(
+                controller.getChapterPage(pageNumber),
+                headers: headers,
+              );
+              final imageName =
+                  "${controller.manga.title ?? controller.mangaId}"
+                  "_${controller.chapterIndex}_$pageNumber";
+              final appDir = await getApplicationDocumentsDirectory();
+
+              final localPath = join(appDir.path, imageName);
+
+              final imageFile = File(localPath);
+              await imageFile.writeAsBytes(file.readAsBytesSync());
+
+              Clipboard.setData(ClipboardData(text: localPath));
+              Get.back();
+              Get.rawSnackbar(
+                title: LocaleKeys.readerScreen_savedImagePathTitle.tr,
+                message: localPath,
+              );
+            }
+          },
+        )
+      ],
     );
   }
 }

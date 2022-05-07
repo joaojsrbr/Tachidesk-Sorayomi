@@ -53,23 +53,5 @@ jobs:
 #         token: ${{ secrets.TELEGRAM_TOKEN }}
 #         document: build/app/outputs/flutter-apk/*.apk
 
-# name: Releases
 
-# on: 
-#   push:
-#     tags:
-#     - '*'
 
-# jobs:
-
-#   build:
-#     runs-on: ubuntu-latest
-#     permissions:
-#       contents: write
-#     steps:
-#     - uses: actions/checkout@v2
-#     - uses: ncipollo/release-action@v1
-#       with:
-#         artifacts: "release.tar.gz,foo/*.txt"
-#         bodyFile: "body.md"
-#         token: ${{ secrets.GITHUB_TOKEN }}

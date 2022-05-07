@@ -26,6 +26,7 @@ dependencies:
   pub_semver: ^2.1.1
   readmore: ^2.1.0
   scrollable_positioned_list: ^0.2.3
+  syncfusion_flutter_sliders: ^20.1.52
   url_launcher: ^6.0.17
 
 dev_dependencies:

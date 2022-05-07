@@ -10,6 +10,7 @@ class DownloadsView extends GetView<DownloadsController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       floatingActionButton:
           Obx(() => controller.downloadsList.queue?.isNotEmpty ?? false
               ? FloatingActionButton.extended(

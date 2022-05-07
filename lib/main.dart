@@ -20,15 +20,17 @@ void main() async {
       initialRoute: AppPages.initial,
       getPages: AppPages.routes,
       theme: ThemeData(
-        colorScheme: ColorScheme.light(),
-        iconTheme: IconThemeData(
-          color: ColorScheme.light().primary,
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Color.fromARGB(31, 10, 89, 225),
+          brightness: Brightness.light,
         ),
       ),
       darkTheme: ThemeData(
-        colorScheme: ColorScheme.dark(),
-        iconTheme: IconThemeData(
-          color: ColorScheme.dark().primary,
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Color.fromARGB(31, 125, 5, 211),
+          brightness: Brightness.dark,
         ),
       ),
       themeMode: controller.theme,

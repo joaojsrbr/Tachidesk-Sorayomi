@@ -105,6 +105,7 @@ class ContinuousVertical extends StatelessWidget {
                   onSecondaryTap: () {
                     readerPageBottomSheet(
                       index: index,
+                      context: context,
                       controller: controller,
                       headers: headers,
                     );
@@ -112,6 +113,7 @@ class ContinuousVertical extends StatelessWidget {
                   onLongPress: () {
                     readerPageBottomSheet(
                       index: index,
+                      context: context,
                       controller: controller,
                       headers: headers,
                     );

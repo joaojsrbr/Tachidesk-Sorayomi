@@ -108,6 +108,7 @@ class ContinuousHorizontalLTR extends StatelessWidget {
                   onSecondaryTap: () {
                     readerPageBottomSheet(
                       index: index,
+                      context: context,
                       controller: controller,
                       headers: headers,
                     );
@@ -115,6 +116,7 @@ class ContinuousHorizontalLTR extends StatelessWidget {
                   onLongPress: () {
                     readerPageBottomSheet(
                       index: index,
+                      context: context,
                       controller: controller,
                       headers: headers,
                     );

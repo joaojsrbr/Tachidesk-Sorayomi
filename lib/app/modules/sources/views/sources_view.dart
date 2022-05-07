@@ -16,9 +16,11 @@ class SourcesView extends GetView<SourcesController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: Obx(
         () => controller.groupByMap.keys.isNotEmpty
             ? ListView.builder(
+                physics: BouncingScrollPhysics(),
                 itemCount: controller.groupByMap.keys.length,
                 itemBuilder: (context, index) {
                   final currentKey = controller.groupByLanguageList[index];

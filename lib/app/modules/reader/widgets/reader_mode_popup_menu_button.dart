@@ -19,27 +19,31 @@ class ReaderModePopupMenuButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PopupMenuButton(
-      icon: icon,
-      tooltip: LocaleKeys.readerScreen_readerMode_.tr,
-      child: child,
-      initialValue: controller.readerMode,
-      onSelected: (ReaderMode? e) => controller.changeReaderMode(e),
-      itemBuilder: (context) {
-        return ReaderMode.values
-            .map<PopupMenuEntry<ReaderMode>>(
-              (e) => PopupMenuItem(
-                value: e,
-                child: ListTile(
-                  title: Text(
-                    (LocaleKeys.readerScreen_readerMode_ + e.name).tr,
-                    overflow: TextOverflow.ellipsis,
+    return Container(
+      child: PopupMenuButton(
+        splashRadius: 20,
+        color: Theme.of(context).colorScheme.background,
+        icon: icon,
+        tooltip: LocaleKeys.readerScreen_readerMode_.tr,
+        child: child,
+        initialValue: controller.readerMode,
+        onSelected: (ReaderMode? e) => controller.changeReaderMode(e),
+        itemBuilder: (context) {
+          return ReaderMode.values
+              .map<PopupMenuEntry<ReaderMode>>(
+                (e) => PopupMenuItem(
+                  value: e,
+                  child: ListTile(
+                    title: Text(
+                      (LocaleKeys.readerScreen_readerMode_ + e.name).tr,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                 ),
-              ),
-            )
-            .toList();
-      },
+              )
+              .toList();
+        },
+      ),
     );
   }
 }

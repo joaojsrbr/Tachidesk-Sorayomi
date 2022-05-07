@@ -78,6 +78,7 @@ class SingleVertical extends StatelessWidget {
                 onSecondaryTap: () {
                   readerPageBottomSheet(
                     index: index,
+                    context: context,
                     controller: controller,
                     headers: headers,
                   );
@@ -85,6 +86,7 @@ class SingleVertical extends StatelessWidget {
                 onLongPress: () {
                   readerPageBottomSheet(
                     index: index,
+                    context: context,
                     controller: controller,
                     headers: headers,
                   );

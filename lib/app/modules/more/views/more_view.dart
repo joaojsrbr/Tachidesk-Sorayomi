@@ -11,6 +11,7 @@ class MoreView extends GetView<MoreController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: ListView(
         children: [
           ImageIcon(

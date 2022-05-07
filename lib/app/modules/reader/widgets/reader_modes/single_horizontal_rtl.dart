@@ -83,6 +83,7 @@ class SingleHorizontalRTL extends StatelessWidget {
                   onSecondaryTap: () {
                     readerPageBottomSheet(
                       index: index,
+                      context: context,
                       controller: controller,
                       headers: headers,
                     );
@@ -90,6 +91,7 @@ class SingleHorizontalRTL extends StatelessWidget {
                   onLongPress: () {
                     readerPageBottomSheet(
                       index: index,
+                      context: context,
                       controller: controller,
                       headers: headers,
                     );

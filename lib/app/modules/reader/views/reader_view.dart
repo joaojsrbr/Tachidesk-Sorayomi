@@ -14,9 +14,9 @@ import '../widgets/reader_settings/reader_settings_bottomsheet.dart';
 class ReaderView extends GetView<ReaderController> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: GestureDetector(
+    return Scaffold(
+      body: SafeArea(
+        child: GestureDetector(
           behavior: HitTestBehavior.translucent,
           onTap: () => controller.toggleVisibility(),
           child: Obx(
@@ -78,6 +78,12 @@ class ReaderView extends GetView<ReaderController> {
                         )
                 ],
                 if (controller.visibility) ...[
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: PagaNumberSlider(
+                      controller: controller,
+                    ),
+                  ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -101,7 +107,8 @@ class ReaderView extends GetView<ReaderController> {
                           ),
                           elevation: 0,
                           iconTheme: IconThemeData(color: context.iconColor),
-                          backgroundColor: Colors.black.withOpacity(.7),
+                          backgroundColor:
+                              Theme.of(context).colorScheme.background,
                         ),
                       ),
                       ConstrainedBox(
@@ -112,45 +119,12 @@ class ReaderView extends GetView<ReaderController> {
                           child: Padding(
                             padding: const EdgeInsets.all(20),
                             child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Row(
-                                  children: [
-                                    Card(
-                                      color: Colors.black.withOpacity(.7),
-                                      shape: CircleBorder(),
-                                      child: IconButton(
-                                        onPressed:
-                                            (controller.chapter.index ?? 0) > 1
-                                                ? controller.prevChapter
-                                                : null,
-                                        icon: Icon(
-                                          Icons.skip_previous_rounded,
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: PagaNumberSlider(
-                                        controller: controller,
-                                      ),
-                                    ),
-                                    Card(
-                                      color: Colors.black.withOpacity(.7),
-                                      shape: CircleBorder(),
-                                      child: IconButton(
-                                        onPressed:
-                                            (controller.chapter.index ?? 1) <
-                                                    (controller.chapter
-                                                            .chapterCount ??
-                                                        0)
-                                                ? controller.nextChapter
-                                                : null,
-                                        icon: Icon(Icons.skip_next_rounded),
-                                      ),
-                                    )
-                                  ],
-                                ),
                                 Card(
-                                  color: Colors.black.withOpacity(.7),
+                                  color:
+                                      Theme.of(context).colorScheme.background,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(25),
                                   ),
@@ -185,6 +159,7 @@ class ReaderView extends GetView<ReaderController> {
                                         IconButton(
                                           onPressed: () =>
                                               readerSettingsBottomSheet(
+                                                  context: context,
                                                   controller: controller),
                                           icon: Icon(Icons.settings_outlined),
                                         )

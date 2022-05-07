@@ -11,7 +11,9 @@ class BrowseView extends GetView<BrowseController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: TabBar(
+          physics: BouncingScrollPhysics(),
           controller: controller.tabController,
           padding: EdgeInsets.all(8),
           isScrollable: context.width > 700 ? true : false,
@@ -27,6 +29,7 @@ class BrowseView extends GetView<BrowseController> {
           ]),
       body: TabBarView(
         controller: controller.tabController,
+        physics: BouncingScrollPhysics(),
         children: [
           SourcesView(),
           ExtensionsView(),

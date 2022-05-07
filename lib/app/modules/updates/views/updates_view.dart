@@ -20,6 +20,7 @@ class UpdatesView extends GetView<UpdatesController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       floatingActionButton: Obx(() => FloatingActionButton(
             backgroundColor: Get.theme.colorScheme.primary,
             child: controller.isFirstPage
@@ -53,9 +54,9 @@ class UpdatesView extends GetView<UpdatesController> {
                     },
                     itemBuilder: (context, MangaPage item) {
                       return ListTile(
-                        onTap: () => Get.toNamed(
-                            "${Routes.manga}/${item.manga!.id}"
-                            "/chapter/${item.chapter!.index}"),
+                        onTap: () =>
+                            Get.toNamed("${Routes.manga}/${item.manga!.id}"
+                                "/chapter/${item.chapter!.index}"),
                         contentPadding:
                             EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                         leading: ClipRRect(
