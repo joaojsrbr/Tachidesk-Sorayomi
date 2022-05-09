@@ -1,11 +1,12 @@
 name: tachidesk_sorayomi
-version: 1.0.8+1
+version: 1.0.12+1
 publish_to: none
 description: A new Flutter frontend for Tachidesk.
 environment:
   sdk: ">=2.16.0-80.1.beta <3.0.0"
 
 dependencies:
+  animated_icon_button: ^1.0.2
   cached_network_image: ^3.2.0
   collection: ^1.15.0
   cupertino_icons: ^1.0.2

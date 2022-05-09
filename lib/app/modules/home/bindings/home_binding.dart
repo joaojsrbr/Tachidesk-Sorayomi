@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:tachidesk_sorayomi/app/modules/home/widgets/small_screen_navigation_bar.dart';
 
 import '../../browse/controllers/browse_controller.dart';
 import '../../downloads/controllers/downloads_controller.dart';
@@ -20,5 +21,7 @@ class HomeBinding extends Bindings {
     Get.lazyPut<ExtensionsController>(() => ExtensionsController());
     Get.lazyPut<SourcesController>(() => SourcesController());
     Get.lazyPut<LibraryController>(() => LibraryController());
+    Get.lazyPut<ScrollToHideWidgetStateController>(
+        () => ScrollToHideWidgetStateController());
   }
 }

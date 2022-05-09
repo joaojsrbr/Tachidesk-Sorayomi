@@ -8,7 +8,9 @@ import '../../../data/update_recent_chapter_model.dart';
 import '../../downloads/controllers/downloads_controller.dart';
 import '../repository/updates_repository.dart';
 
-class UpdatesController extends GetxController {
+class UpdatesController extends GetxController
+    with GetSingleTickerProviderStateMixin {
+  late AnimationController animationController;
   final UpdatesRepository repository = UpdatesRepository();
   int _page = 0;
   final ScrollController scrollController = ScrollController();
@@ -79,4 +81,13 @@ class UpdatesController extends GetxController {
 
   @override
   void onClose() {}
+
+  @override
+  void onInit() {
+    animationController = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 1000),
+    );
+    super.onInit();
+  }
 }

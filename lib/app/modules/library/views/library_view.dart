@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:grouped_list/sliver_grouped_list.dart';
 import 'package:tachidesk_sorayomi/app/modules/browse/widgets/browse_appbar_actions.dart';
 import 'package:tachidesk_sorayomi/app/modules/home/controllers/home_controller.dart';
 import 'package:tachidesk_sorayomi/app/modules/home/views/home_view.dart';
@@ -20,7 +21,7 @@ class LibraryView extends GetView<LibraryController> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       body: NestedScrollView(
-        controller: _.scrollController,
+        controller: controller.scrollController,
         body: Obx(
           () => controller.categoryListLength >= 1
               ? TabBarView(
@@ -32,31 +33,43 @@ class LibraryView extends GetView<LibraryController> {
                       List<Manga>? mangaList =
                           controller.categoryMangaMap[index];
                       return mangaList != null && mangaList.isNotEmpty
-                          ? GetBuilder<HomeController>(
-                              builder: (controller) => GridView.builder(
-                                // controller: c.scrollController,
-                                // shrinkWrap: true,
-
-                                padding: EdgeInsets.only(
-                                    right: 4, left: 4, top: 2, bottom: 2),
-                                gridDelegate:
-                                    SliverGridDelegateWithMaxCrossAxisExtent(
-                                  maxCrossAxisExtent: 205,
-                                  crossAxisSpacing: 2.0,
-                                  mainAxisSpacing: 2.0,
-                                  childAspectRatio: 0.7,
+                          ? ListView.builder(
+                              physics: NeverScrollableScrollPhysics(),
+                              primary: true,
+                              itemCount: mangaList.length,
+                              itemBuilder: (context, index) => MangaGridDesign(
+                                colorBlendMode: BlendMode.darken,
+                                manga: mangaList[index],
+                                onTap: () => Get.toNamed(
+                                  "${Routes.manga}/${mangaList[index].id}",
                                 ),
-                                itemCount: mangaList.length,
-                                itemBuilder: (context, index) =>
-                                    MangaGridDesign(
-                                  colorBlendMode: BlendMode.darken,
-                                  manga: mangaList[index],
-                                  onTap: () => Get.toNamed(
-                                    "${Routes.manga}/${mangaList[index].id}",
-                                  ),
-                                  isLibraryScreen: true,
-                                ),
+                                isLibraryScreen: true,
                               ),
+
+                              // GridView.builder(
+                              //   // controller: c.scrollController,
+                              //   // shrinkWrap: true,
+
+                              //   padding: EdgeInsets.only(
+                              //       right: 4, left: 4, top: 2, bottom: 2),
+                              //   gridDelegate:
+                              //       SliverGridDelegateWithMaxCrossAxisExtent(
+                              //     maxCrossAxisExtent: 205,
+                              //     crossAxisSpacing: 2.0,
+                              //     mainAxisSpacing: 2.0,
+                              //     childAspectRatio: 0.7,
+                              //   ),
+                              //   itemCount: mangaList.length,
+                              //   itemBuilder: (context, index) =>
+                              //       MangaGridDesign(
+                              //     colorBlendMode: BlendMode.darken,
+                              //     manga: mangaList[index],
+                              //     onTap: () => Get.toNamed(
+                              //       "${Routes.manga}/${mangaList[index].id}",
+                              //     ),
+                              //     isLibraryScreen: true,
+                              //   ),
+                              // ),
                             )
                           : (controller.isLoading
                               ? Center(
@@ -129,7 +142,7 @@ class LibraryView extends GetView<LibraryController> {
                           indicatorColor: Theme.of(context).colorScheme.primary,
                           // padding: EdgeInsets.all(8),
                           tabs: controller.categoryList
-                              .map<Tab>((e) => Tab(text: e?.name ?? ""))
+                              .map<Tab>((e) => Tab(text: e?.name ?? "Default"))
                               .toList(),
                         ),
                 )),

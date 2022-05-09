@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:get/get.dart';
+import 'package:tachidesk_sorayomi/app/modules/browse/controllers/browse_controller.dart';
 
 import '../../../../generated/locales.g.dart';
 import '../../../core/utils/language.dart';
@@ -14,6 +15,7 @@ import '../controllers/extensions_controller.dart';
 class ExtensionsView extends GetView<ExtensionsController> {
   @override
   Widget build(BuildContext context) {
+    final _ = Get.find<BrowseController>();
     return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
         body: Obx(
@@ -23,6 +25,8 @@ class ExtensionsView extends GetView<ExtensionsController> {
                 )
               : controller.groupByMap.keys.isNotEmpty
                   ? ListView.builder(
+                      controller: _.scrollController,
+                      shrinkWrap: true,
                       physics: BouncingScrollPhysics(),
                       itemCount: controller.groupByMap.keys.length,
                       itemBuilder: (context, index) {

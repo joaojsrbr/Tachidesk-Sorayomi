@@ -22,7 +22,7 @@ class BrowseController extends GetxController
   int get tabIndex => _tabIndex.value;
 
   final TextEditingController textEditingController = TextEditingController();
-
+  late ScrollController scrollController;
   final RxBool _isSearching = false.obs;
   bool get isSearching => _isSearching.value;
   set isSearching(bool value) => _isSearching.value = value;
@@ -87,7 +87,14 @@ class BrowseController extends GetxController
   void onInit() {
     tabController = TabController(length: 2, vsync: this, initialIndex: 0);
     tabController.addListener(() => _tabIndex.value = tabController.index);
+    scrollController = ScrollController()..addListener(() => update());
 
     super.onInit();
+  }
+
+  @override
+  void onClose() {
+    scrollController.dispose();
+    super.onClose();
   }
 }
