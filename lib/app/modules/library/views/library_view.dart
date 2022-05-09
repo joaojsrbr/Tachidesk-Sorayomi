@@ -35,7 +35,7 @@ class LibraryView extends GetView<LibraryController> {
                           ? GetBuilder<HomeController>(
                               builder: (controller) => GridView.builder(
                                 // controller: c.scrollController,
-                                shrinkWrap: true,
+                                // shrinkWrap: true,
 
                                 padding: EdgeInsets.only(
                                     right: 4, left: 4, top: 2, bottom: 2),
@@ -90,37 +90,49 @@ class LibraryView extends GetView<LibraryController> {
         physics: BouncingScrollPhysics(),
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return [
-            SliverAppBar(
-              toolbarHeight: 70,
-              elevation: 0,
-              pinned: true,
-              floating: true,
-              actions: [
-                IconButton(
-                    enableFeedback: false,
-                    onPressed: () => controller.refreshLibraryScreen(),
-                    icon: Icon(Icons.refresh)),
-                Obx(() =>
-                    _.selectedIndex == 0 ? LibraryAppBarActions() : SizedBox()),
-                Obx(() =>
-                    _.selectedIndex == 2 ? BrowseAppBarActions() : SizedBox())
-              ],
-              // pinned: true,
-              // floating: true,
-              title: Text(navigationBarTitles[0].tr),
-              bottom: controller.categoryListLength <= 1
-                  ? null
-                  : TabBar(
-                      controller: controller.tabController,
-                      isScrollable: true,
-                      indicatorSize: TabBarIndicatorSize.label,
-                      indicatorColor: Theme.of(context).colorScheme.primary,
-                      // padding: EdgeInsets.all(8),
-                      tabs: controller.categoryList
-                          .map<Tab>((e) => Tab(text: e?.name ?? ""))
-                          .toList(),
-                    ),
-            ),
+            Obx(() => SliverAppBar(
+                  // centerTitle: true,
+                  toolbarHeight: 70,
+                  // backgroundColor: Colors.transparent,
+                  // forceElevated: true,
+                  expandedHeight: 130,
+                  // elevation: 0,
+                  pinned: true,
+                  stretch: true,
+
+                  floating: true,
+                  actions: [
+                    IconButton(
+                        enableFeedback: false,
+                        onPressed: () => controller.refreshLibraryScreen(),
+                        icon: Icon(Icons.refresh)),
+
+                    // IconButton(
+                    //     enableFeedback: false,
+                    //     onPressed: () => controller.refreshLibraryScreen(),
+                    //     icon: Icon(Icons.refresh)),
+                    Obx(() => _.selectedIndex == 0
+                        ? LibraryAppBarActions()
+                        : SizedBox()),
+                    Obx(() => _.selectedIndex == 2
+                        ? BrowseAppBarActions()
+                        : SizedBox())
+                  ],
+
+                  title: Text(navigationBarTitles[0].tr),
+                  bottom: controller.categoryListLength <= 1
+                      ? null
+                      : TabBar(
+                          controller: controller.tabController,
+                          isScrollable: true,
+                          indicatorSize: TabBarIndicatorSize.label,
+                          indicatorColor: Theme.of(context).colorScheme.primary,
+                          // padding: EdgeInsets.all(8),
+                          tabs: controller.categoryList
+                              .map<Tab>((e) => Tab(text: e?.name ?? ""))
+                              .toList(),
+                        ),
+                )),
           ];
         },
       ),
