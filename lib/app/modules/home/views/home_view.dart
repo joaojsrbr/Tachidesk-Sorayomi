@@ -4,14 +4,14 @@ import 'package:get/get.dart';
 
 import '../../../../generated/locales.g.dart';
 import '../../browse/views/browse_view.dart';
-import '../../browse/widgets/browse_appbar_actions.dart';
+
 import '../../downloads/views/downloads_view.dart';
 import '../../library/views/library_view.dart';
-import '../../library/widgets/library_appbar_actions.dart';
+
 import '../../more/views/more_view.dart';
 import '../../updates/views/updates_view.dart';
 import '../controllers/home_controller.dart';
-import '../widgets/big_screen_navigation_bar.dart';
+
 import '../widgets/small_screen_navigation_bar.dart';
 
 const List<String> navigationBarTitles = [

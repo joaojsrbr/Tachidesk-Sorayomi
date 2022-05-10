@@ -1,5 +1,5 @@
 name: tachidesk_sorayomi
-version: 1.0.12+1
+version: 1.0.13+1
 publish_to: none
 description: A new Flutter frontend for Tachidesk.
 environment:
@@ -29,6 +29,7 @@ dependencies:
   scrollable_positioned_list: ^0.2.3
   syncfusion_flutter_sliders: ^20.1.52
   url_launcher: ^6.0.17
+  pinch_zoom_image_last: ^0.4.1
 
 dev_dependencies:
   flutter_lints: ^2.0.1

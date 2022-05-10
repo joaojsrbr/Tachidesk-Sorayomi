@@ -24,14 +24,16 @@ class ReaderView extends GetView<ReaderController> {
               children: [
                 !controller.isLoading
                     ? controller.chapter.pageCount != null
-                        ? Obx(() {
-                            ReaderMode readerMode = controller.readerMode ==
-                                    ReaderMode.defaultReader
-                                ? controller.localStorageService.readerMode
-                                : controller.readerMode;
-                            return controller.readerModeMap[readerMode]!(
-                                controller: controller);
-                          })
+                        ? Obx(
+                            () {
+                              ReaderMode readerMode = controller.readerMode ==
+                                      ReaderMode.defaultReader
+                                  ? controller.localStorageService.readerMode
+                                  : controller.readerMode;
+                              return controller.readerModeMap[readerMode]!(
+                                  controller: controller);
+                            },
+                          )
                         : EmoticonsView(
                             text: "${LocaleKeys.no.tr} "
                                 "${LocaleKeys.readerScreen_chapterError.tr}",

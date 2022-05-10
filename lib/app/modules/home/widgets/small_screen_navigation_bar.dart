@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-
 import 'package:get/get.dart';
 import 'package:tachidesk_sorayomi/app/modules/browse/controllers/browse_controller.dart';
 import 'package:tachidesk_sorayomi/app/modules/updates/controllers/updates_controller.dart';

@@ -1,7 +1,9 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers
+
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:grouped_list/sliver_grouped_list.dart';
+
 import 'package:tachidesk_sorayomi/app/modules/browse/widgets/browse_appbar_actions.dart';
 import 'package:tachidesk_sorayomi/app/modules/home/controllers/home_controller.dart';
 import 'package:tachidesk_sorayomi/app/modules/home/views/home_view.dart';
@@ -112,7 +114,6 @@ class LibraryView extends GetView<LibraryController> {
                   // elevation: 0,
                   pinned: true,
                   stretch: true,
-
                   floating: true,
                   actions: [
                     IconButton(
@@ -131,7 +132,6 @@ class LibraryView extends GetView<LibraryController> {
                         ? BrowseAppBarActions()
                         : SizedBox())
                   ],
-
                   title: Text(navigationBarTitles[0].tr),
                   bottom: controller.categoryListLength <= 1
                       ? null
@@ -141,8 +141,11 @@ class LibraryView extends GetView<LibraryController> {
                           indicatorSize: TabBarIndicatorSize.label,
                           indicatorColor: Theme.of(context).colorScheme.primary,
                           // padding: EdgeInsets.all(8),
+
                           tabs: controller.categoryList
-                              .map<Tab>((e) => Tab(text: e?.name ?? "Default"))
+                              .map<Tab>((e) => Tab(
+                                    text: e?.name ?? "Default",
+                                  ))
                               .toList(),
                         ),
                 )),

@@ -1,9 +1,7 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:path/path.dart';
+
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 import '../controllers/reader_controller.dart';

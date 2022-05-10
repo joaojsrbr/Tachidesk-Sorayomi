@@ -15,7 +15,7 @@ import '../../../data/enums/auth_type.dart';
 import '../../../data/manga_page_model.dart';
 import '../../../routes/app_pages.dart';
 import '../../../widgets/emoticons.dart';
-import '../../home/controllers/home_controller.dart';
+
 import '../../home/views/home_view.dart';
 import '../controllers/updates_controller.dart';
 

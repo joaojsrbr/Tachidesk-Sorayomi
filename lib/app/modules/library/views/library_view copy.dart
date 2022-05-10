@@ -1,9 +1,11 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:tachidesk_sorayomi/app/modules/browse/widgets/browse_appbar_actions.dart';
 import 'package:tachidesk_sorayomi/app/modules/home/controllers/home_controller.dart';
-import 'package:tachidesk_sorayomi/app/modules/home/widgets/small_screen_navigation_bar.dart';
+
 import 'package:tachidesk_sorayomi/app/modules/library/widgets/library_appbar_actions.dart';
 
 import '../../../../generated/locales.g.dart';

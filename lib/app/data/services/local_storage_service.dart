@@ -22,6 +22,7 @@ import '../enums/reader_navigation_layout.dart';
 
 class LocalStorageService extends GetxService {
   final box = GetStorage();
+  // ignore: todo
   // TODO Need Enhancement in Tachidesk-server
   // https://github.com/Suwayomi/Tachidesk-Server/issues/312
   // final Rx<Settings> _settings = Settings().obs;
