@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:animated_icon_button/animated_icon_button.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -14,6 +15,8 @@ import '../../../data/enums/auth_type.dart';
 import '../../../data/manga_page_model.dart';
 import '../../../routes/app_pages.dart';
 import '../../../widgets/emoticons.dart';
+
+import '../../home/views/home_view.dart';
 import '../controllers/updates_controller.dart';
 
 class UpdatesView extends GetView<UpdatesController> {
@@ -21,98 +24,123 @@ class UpdatesView extends GetView<UpdatesController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
-      floatingActionButton: Obx(() => FloatingActionButton(
-            backgroundColor: Get.theme.colorScheme.primary,
-            child: controller.isFirstPage
-                ? CircularProgressIndicator(
-                    color: Get.theme.colorScheme.onPrimary,
-                  )
-                : Icon(
-                    Icons.refresh_outlined,
-                    color: Get.theme.colorScheme.onPrimary,
-                  ),
-            onPressed: () => controller.getNextPage(isRefresh: true),
-          )),
-      body: Obx(
-        () => controller.isFirstPage
-            ? Center(child: CircularProgressIndicator())
-            : ((controller.updateRecentChapter.pageList?.isNotEmpty ?? false))
-                ? GroupedListView(
-                    padding: EdgeInsets.all(8),
-                    controller: controller.scrollController,
-                    order: GroupedListOrder.DESC,
-                    itemComparator: (MangaPage element1, MangaPage element2) =>
-                        element1.chapter!.uploadDate!.compareTo(
-                      element2.chapter!.uploadDate!,
-                    ),
-                    elements: controller.updateRecentChapter.pageList!.reversed
-                        .toList(),
-                    groupBy: (MangaPage element) {
-                      final time = DateTime.fromMillisecondsSinceEpoch(
-                          element.chapter!.fetchedAt! * 1000);
-                      return DateTime(time.year, time.month, time.day);
-                    },
-                    itemBuilder: (context, MangaPage item) {
-                      return ListTile(
-                        onTap: () =>
-                            Get.toNamed("${Routes.manga}/${item.manga!.id}"
-                                "/chapter/${item.chapter!.index}"),
-                        contentPadding:
-                            EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                        leading: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: CachedNetworkImage(
-                            imageUrl: controller.localStorageService.baseURL +
-                                (item.manga?.thumbnailUrl ?? ""),
-                            height: 48,
-                            httpHeaders:
-                                controller.localStorageService.baseAuthType ==
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Get.theme.colorScheme.primary,
+        child: GetBuilder<UpdatesController>(
+          builder: (_) {
+            return AnimatedIconButton(
+              animationDirection: AnimationDirection.forward(),
+              splashColor: Colors.transparent,
+              animationController: _.animationController,
+              icons: [
+                AnimatedIconItem(
+                  icon: Icon(Icons.refresh_rounded, color: Colors.purple),
+                ),
+              ],
+              onPressed: () => _.getNextPage(isRefresh: true),
+            );
+          },
+        ),
+        onPressed: () {},
+      ),
+      body: NestedScrollView(
+          floatHeaderSlivers: true,
+          headerSliverBuilder: (context, innerBoxIsScrolled) => [
+                SliverAppBar(
+                  floating: true,
+
+                  pinned: false,
+                  // leading: Icon(Icons.refresh_outlined),
+                  toolbarHeight: 70,
+                  title: Text(navigationBarTitles[1].tr),
+                ),
+              ],
+          body: Obx(
+            () => controller.isFirstPage
+                ? Center(child: CircularProgressIndicator())
+                : ((controller.updateRecentChapter.pageList?.isNotEmpty ??
+                        false))
+                    ? GroupedListView(
+                        padding: EdgeInsets.all(8),
+                        controller: controller.scrollController,
+                        shrinkWrap: true,
+                        // controller: controller.scrollController,
+                        order: GroupedListOrder.DESC,
+                        itemComparator:
+                            (MangaPage element1, MangaPage element2) =>
+                                element1.chapter!.uploadDate!.compareTo(
+                          element2.chapter!.uploadDate!,
+                        ),
+                        elements: controller
+                            .updateRecentChapter.pageList!.reversed
+                            .toList(),
+                        groupBy: (MangaPage element) {
+                          final time = DateTime.fromMillisecondsSinceEpoch(
+                              element.chapter!.fetchedAt! * 1000);
+                          return DateTime(time.year, time.month, time.day);
+                        },
+                        itemBuilder: (context, MangaPage item) {
+                          return ListTile(
+                            onTap: () =>
+                                Get.toNamed("${Routes.manga}/${item.manga!.id}"
+                                    "/chapter/${item.chapter!.index}"),
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 8, horizontal: 16),
+                            leading: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: CachedNetworkImage(
+                                imageUrl:
+                                    controller.localStorageService.baseURL +
+                                        (item.manga?.thumbnailUrl ?? ""),
+                                height: 48,
+                                httpHeaders: controller
+                                            .localStorageService.baseAuthType ==
                                         AuthType.basic
                                     ? {
                                         "Authorization": controller
                                             .localStorageService.basicAuth,
                                       }
                                     : null,
-                            width: 48,
-                            fit: BoxFit.cover,
-                            errorWidget: (context, object, stack) =>
-                                Image.asset(
-                              iconPngURL,
-                              height: 48,
-                              width: 48,
-                              fit: BoxFit.cover,
+                                width: 48,
+                                fit: BoxFit.cover,
+                                errorWidget: (context, object, stack) =>
+                                    Image.asset(
+                                  iconPngURL,
+                                  height: 48,
+                                  width: 48,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
                             ),
-                          ),
+                            title: Text(
+                              item.manga?.title ?? "",
+                              style: TextStyle(
+                                  color: item.chapter?.read ?? false
+                                      ? Colors.grey
+                                      : null),
+                            ),
+                            subtitle: Text(
+                              item.chapter?.name ?? "",
+                              style: TextStyle(
+                                  color: item.chapter?.read ?? false
+                                      ? Colors.grey
+                                      : null),
+                            ),
+                            trailing: DownloadState(
+                              controller: controller,
+                              item: item,
+                            ),
+                          );
+                        },
+                        groupSeparatorBuilder: (DateTime value) => ListTile(
+                          title: Text(convertToAgo(value)),
                         ),
-                        title: Text(
-                          item.manga?.title ?? "",
-                          style: TextStyle(
-                              color: item.chapter?.read ?? false
-                                  ? Colors.grey
-                                  : null),
-                        ),
-                        subtitle: Text(
-                          item.chapter?.name ?? "",
-                          style: TextStyle(
-                              color: item.chapter?.read ?? false
-                                  ? Colors.grey
-                                  : null),
-                        ),
-                        trailing: DownloadState(
-                          controller: controller,
-                          item: item,
-                        ),
-                      );
-                    },
-                    groupSeparatorBuilder: (DateTime value) => ListTile(
-                      title: Text(convertToAgo(value)),
-                    ),
-                  )
-                : EmoticonsView(
-                    text:
-                        "${LocaleKeys.no.tr} ${LocaleKeys.screenTitle_updates.tr}",
-                  ),
-      ),
+                      )
+                    : EmoticonsView(
+                        text:
+                            "${LocaleKeys.no.tr} ${LocaleKeys.screenTitle_updates.tr}",
+                      ),
+          )),
     );
   }
 }

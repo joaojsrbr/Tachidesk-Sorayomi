@@ -41,53 +41,55 @@ class SourceSearchGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     searchQuery();
-    return Obx(() => Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              title: Text(source.displayName ?? source.name!),
-              trailing: Icon(Icons.arrow_forward_rounded),
-              onTap: () => Get.toNamed(
-                "${Routes.sourceManga}/${source.id}/search?query=$query",
-              ),
+    return Obx(
+      () => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ListTile(
+            title: Text(source.displayName ?? source.name!),
+            trailing: Icon(Icons.arrow_forward_rounded),
+            onTap: () => Get.toNamed(
+              "${Routes.sourceManga}/${source.id}/search?query=$query",
             ),
-            isLoading
-                ? SizedBox(
-                    height: 205,
-                    child: Center(child: CircularProgressIndicator()),
-                  )
-                : sourceMangaListModel.mangaList?.isNotEmpty ?? false
-                    ? SizedBox(
-                        height: 205,
-                        child: Scrollbar(
-                          thumbVisibility: true,
+          ),
+          isLoading
+              ? SizedBox(
+                  height: 205,
+                  child: Center(child: CircularProgressIndicator()),
+                )
+              : sourceMangaListModel.mangaList?.isNotEmpty ?? false
+                  ? SizedBox(
+                      height: 205,
+                      child: Scrollbar(
+                        thumbVisibility: true,
+                        controller: controller,
+                        child: GridView.builder(
                           controller: controller,
-                          child: GridView.builder(
-                            controller: controller,
-                            scrollDirection: Axis.horizontal,
-                            gridDelegate:
-                                const SliverGridDelegateWithMaxCrossAxisExtent(
-                              maxCrossAxisExtent: 205,
-                              crossAxisSpacing: 2.0,
-                              mainAxisSpacing: 2.0,
-                              childAspectRatio: 1.43,
-                            ),
-                            itemCount: (sourceMangaListModel.mangaList!.length),
-                            itemBuilder: (BuildContext context, int index) {
-                              return MangaGridDesign(
-                                manga: sourceMangaListModel.mangaList![index],
-                                onTap: () => Get.toNamed(
-                                  "${Routes.manga}/"
-                                  "${sourceMangaListModel.mangaList?[index].id}",
-                                ),
-                                isLibraryScreen: true,
-                              );
-                            },
+                          scrollDirection: Axis.horizontal,
+                          gridDelegate:
+                              const SliverGridDelegateWithMaxCrossAxisExtent(
+                            maxCrossAxisExtent: 205,
+                            crossAxisSpacing: 2.0,
+                            mainAxisSpacing: 2.0,
+                            childAspectRatio: 1.43,
                           ),
+                          itemCount: (sourceMangaListModel.mangaList!.length),
+                          itemBuilder: (BuildContext context, int index) {
+                            return MangaGridDesign(
+                              isLibraryScreen: true,
+                              manga: sourceMangaListModel.mangaList![index],
+                              onTap: () => Get.toNamed(
+                                "${Routes.manga}/"
+                                "${sourceMangaListModel.mangaList?[index].id}",
+                              ),
+                            );
+                          },
                         ),
-                      )
-                    : Text("No Results found"),
-          ],
-        ));
+                      ),
+                    )
+                  : Text("No Results found"),
+        ],
+      ),
+    );
   }
 }

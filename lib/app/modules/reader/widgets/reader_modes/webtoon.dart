@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:get/get.dart';
+import 'package:pinch_zoom_image_last/pinch_zoom_image_last.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../../../../../generated/locales.g.dart';
@@ -69,83 +70,80 @@ class Webtoon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     initListeners();
-    return InteractiveViewer(
-      child: Shortcuts(
-        shortcuts: {
-          LogicalKeySet(LogicalKeyboardKey.arrowUp): PreviousScrollIntent(),
-          LogicalKeySet(LogicalKeyboardKey.arrowDown): NextScrollIntent(),
+    return Shortcuts(
+      shortcuts: {
+        LogicalKeySet(LogicalKeyboardKey.arrowUp): PreviousScrollIntent(),
+        LogicalKeySet(LogicalKeyboardKey.arrowDown): NextScrollIntent(),
+      },
+      child: Actions(
+        actions: {
+          PreviousScrollIntent: CallbackAction<PreviousScrollIntent>(
+            onInvoke: (intent) => controller.previousScroll!(),
+          ),
+          NextScrollIntent: CallbackAction<NextScrollIntent>(
+            onInvoke: (intent) => controller.nextScroll!(),
+          ),
         },
-        child: Actions(
-          actions: {
-            PreviousScrollIntent: CallbackAction<PreviousScrollIntent>(
-              onInvoke: (intent) => controller.previousScroll!(),
-            ),
-            NextScrollIntent: CallbackAction<NextScrollIntent>(
-              onInvoke: (intent) => controller.nextScroll!(),
-            ),
-          },
-          child: Focus(
-            autofocus: true,
-            child: ScrollablePositionedList.builder(
-              itemScrollController: itemScrollController,
-              itemPositionsListener: itemPositionsListener,
-              itemCount: controller.chapter.pageCount ?? 0,
-              itemBuilder: (context, index) {
-                if (index == (controller.chapter.pageCount! - 1)) {
-                  controller.markAsRead();
-                }
-                Map<String, String>? headers =
-                    controller.localStorageService.baseAuthType ==
-                            AuthType.basic
-                        ? {
-                            "Authorization":
-                                controller.localStorageService.basicAuth,
-                          }
-                        : null;
-                return GestureDetector(
-                  onSecondaryTap: () {
-                    readerPageBottomSheet(
-                      context: context,
-                      index: index,
-                      controller: controller,
-                      headers: headers,
-                    );
-                  },
-                  onLongPress: () {
-                    readerPageBottomSheet(
-                      index: index,
-                      context: context,
-                      controller: controller,
-                      headers: headers,
-                    );
-                  },
-                  child: CachedNetworkImage(
-                    fit: BoxFit.fitWidth,
-                    imageUrl: controller.getChapterPage(index),
-                    httpHeaders: headers,
-                    filterQuality: FilterQuality.high,
-                    progressIndicatorBuilder:
-                        (context, url, downloadProgress) => SizedBox(
-                      height: context.height * .7,
-                      child: Center(
-                        child: CircularProgressIndicator(
-                          value: downloadProgress.progress,
-                        ),
-                      ),
-                    ),
-                    errorWidget: (context, url, error) => SizedBox(
-                      height: context.height,
-                      child: Center(
-                        child: EmoticonsView(
-                          text: "${LocaleKeys.no.tr} "
-                              "${LocaleKeys.readerScreen_image.tr}",
-                        ),
+        child: Focus(
+          autofocus: true,
+          child: ScrollablePositionedList.builder(
+            itemScrollController: itemScrollController,
+            itemPositionsListener: itemPositionsListener,
+            itemCount: controller.chapter.pageCount ?? 0,
+            itemBuilder: (context, index) {
+              if (index == (controller.chapter.pageCount! - 1)) {
+                controller.markAsRead();
+              }
+              Map<String, String>? headers =
+                  controller.localStorageService.baseAuthType == AuthType.basic
+                      ? {
+                          "Authorization":
+                              controller.localStorageService.basicAuth,
+                        }
+                      : null;
+              return GestureDetector(
+                onSecondaryTap: () {
+                  readerPageBottomSheet(
+                    context: context,
+                    index: index,
+                    controller: controller,
+                    headers: headers,
+                  );
+                },
+                onLongPress: () {
+                  readerPageBottomSheet(
+                    index: index,
+                    context: context,
+                    controller: controller,
+                    headers: headers,
+                  );
+                },
+                child: CachedNetworkImage(
+                  fit: BoxFit.fitWidth,
+                  imageUrl: controller.getChapterPage(index),
+                  httpHeaders: headers,
+                  filterQuality: FilterQuality.high,
+                  progressIndicatorBuilder: (context, url, downloadProgress) =>
+                      SizedBox(
+                    height: context.height * .7,
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        value: downloadProgress.progress,
                       ),
                     ),
                   ),
-                );
-              },
-            ),
+                  errorWidget: (context, url, error) => SizedBox(
+                    height: context.height,
+                    child: Center(
+                      child: EmoticonsView(
+                        text: "${LocaleKeys.no.tr} "
+                            "${LocaleKeys.readerScreen_image.tr}",
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            },
           ),
         ),
       ),

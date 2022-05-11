@@ -1,3 +1,5 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers
+
 import 'package:flutter/material.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -10,16 +12,20 @@ import '../../../data/enums/auth_type.dart';
 import '../../../data/source_model.dart';
 import '../../../routes/app_pages.dart';
 import '../../../widgets/emoticons.dart';
+import '../../browse/controllers/browse_controller.dart';
 import '../controllers/sources_controller.dart';
 
 class SourcesView extends GetView<SourcesController> {
   @override
   Widget build(BuildContext context) {
+    final _ = Get.find<BrowseController>();
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       body: Obx(
         () => controller.groupByMap.keys.isNotEmpty
             ? ListView.builder(
+                shrinkWrap: true,
+                controller: _.scrollController,
                 physics: BouncingScrollPhysics(),
                 itemCount: controller.groupByMap.keys.length,
                 itemBuilder: (context, index) {

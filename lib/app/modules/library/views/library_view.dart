@@ -1,6 +1,9 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers
+
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+
 import 'package:tachidesk_sorayomi/app/modules/browse/widgets/browse_appbar_actions.dart';
 import 'package:tachidesk_sorayomi/app/modules/home/controllers/home_controller.dart';
 import 'package:tachidesk_sorayomi/app/modules/home/views/home_view.dart';
@@ -20,7 +23,7 @@ class LibraryView extends GetView<LibraryController> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       body: NestedScrollView(
-        controller: _.scrollController,
+        controller: controller.scrollController,
         body: Obx(
           () => controller.categoryListLength >= 1
               ? TabBarView(
@@ -32,31 +35,43 @@ class LibraryView extends GetView<LibraryController> {
                       List<Manga>? mangaList =
                           controller.categoryMangaMap[index];
                       return mangaList != null && mangaList.isNotEmpty
-                          ? GetBuilder<HomeController>(
-                              builder: (controller) => GridView.builder(
-                                // controller: c.scrollController,
-                                shrinkWrap: true,
-
-                                padding: EdgeInsets.only(
-                                    right: 4, left: 4, top: 2, bottom: 2),
-                                gridDelegate:
-                                    SliverGridDelegateWithMaxCrossAxisExtent(
-                                  maxCrossAxisExtent: 205,
-                                  crossAxisSpacing: 2.0,
-                                  mainAxisSpacing: 2.0,
-                                  childAspectRatio: 0.7,
+                          ? ListView.builder(
+                              physics: NeverScrollableScrollPhysics(),
+                              primary: true,
+                              itemCount: mangaList.length,
+                              itemBuilder: (context, index) => MangaGridDesign(
+                                colorBlendMode: BlendMode.darken,
+                                manga: mangaList[index],
+                                onTap: () => Get.toNamed(
+                                  "${Routes.manga}/${mangaList[index].id}",
                                 ),
-                                itemCount: mangaList.length,
-                                itemBuilder: (context, index) =>
-                                    MangaGridDesign(
-                                  colorBlendMode: BlendMode.darken,
-                                  manga: mangaList[index],
-                                  onTap: () => Get.toNamed(
-                                    "${Routes.manga}/${mangaList[index].id}",
-                                  ),
-                                  isLibraryScreen: true,
-                                ),
+                                isLibraryScreen: true,
                               ),
+
+                              // GridView.builder(
+                              //   // controller: c.scrollController,
+                              //   // shrinkWrap: true,
+
+                              //   padding: EdgeInsets.only(
+                              //       right: 4, left: 4, top: 2, bottom: 2),
+                              //   gridDelegate:
+                              //       SliverGridDelegateWithMaxCrossAxisExtent(
+                              //     maxCrossAxisExtent: 205,
+                              //     crossAxisSpacing: 2.0,
+                              //     mainAxisSpacing: 2.0,
+                              //     childAspectRatio: 0.7,
+                              //   ),
+                              //   itemCount: mangaList.length,
+                              //   itemBuilder: (context, index) =>
+                              //       MangaGridDesign(
+                              //     colorBlendMode: BlendMode.darken,
+                              //     manga: mangaList[index],
+                              //     onTap: () => Get.toNamed(
+                              //       "${Routes.manga}/${mangaList[index].id}",
+                              //     ),
+                              //     isLibraryScreen: true,
+                              //   ),
+                              // ),
                             )
                           : (controller.isLoading
                               ? Center(
@@ -90,37 +105,50 @@ class LibraryView extends GetView<LibraryController> {
         physics: BouncingScrollPhysics(),
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return [
-            SliverAppBar(
-              toolbarHeight: 70,
-              elevation: 0,
-              pinned: true,
-              floating: true,
-              actions: [
-                IconButton(
-                    enableFeedback: false,
-                    onPressed: () => controller.refreshLibraryScreen(),
-                    icon: Icon(Icons.refresh)),
-                Obx(() =>
-                    _.selectedIndex == 0 ? LibraryAppBarActions() : SizedBox()),
-                Obx(() =>
-                    _.selectedIndex == 2 ? BrowseAppBarActions() : SizedBox())
-              ],
-              // pinned: true,
-              // floating: true,
-              title: Text(navigationBarTitles[0].tr),
-              bottom: controller.categoryListLength <= 1
-                  ? null
-                  : TabBar(
-                      controller: controller.tabController,
-                      isScrollable: true,
-                      indicatorSize: TabBarIndicatorSize.label,
-                      indicatorColor: Theme.of(context).colorScheme.primary,
-                      // padding: EdgeInsets.all(8),
-                      tabs: controller.categoryList
-                          .map<Tab>((e) => Tab(text: e?.name ?? ""))
-                          .toList(),
-                    ),
-            ),
+            Obx(() => SliverAppBar(
+                  // centerTitle: true,
+                  toolbarHeight: 70,
+                  // backgroundColor: Colors.transparent,
+                  // forceElevated: true,
+                  expandedHeight: 130,
+                  // elevation: 0,
+                  pinned: true,
+                  stretch: true,
+                  floating: true,
+                  actions: [
+                    IconButton(
+                        enableFeedback: false,
+                        onPressed: () => controller.refreshLibraryScreen(),
+                        icon: Icon(Icons.refresh)),
+
+                    // IconButton(
+                    //     enableFeedback: false,
+                    //     onPressed: () => controller.refreshLibraryScreen(),
+                    //     icon: Icon(Icons.refresh)),
+                    Obx(() => _.selectedIndex == 0
+                        ? LibraryAppBarActions()
+                        : SizedBox()),
+                    Obx(() => _.selectedIndex == 2
+                        ? BrowseAppBarActions()
+                        : SizedBox())
+                  ],
+                  title: Text(navigationBarTitles[0].tr),
+                  bottom: controller.categoryListLength <= 1
+                      ? null
+                      : TabBar(
+                          controller: controller.tabController,
+                          isScrollable: true,
+                          indicatorSize: TabBarIndicatorSize.label,
+                          indicatorColor: Theme.of(context).colorScheme.primary,
+                          // padding: EdgeInsets.all(8),
+
+                          tabs: controller.categoryList
+                              .map<Tab>((e) => Tab(
+                                    text: e?.name ?? "Default",
+                                  ))
+                              .toList(),
+                        ),
+                )),
           ];
         },
       ),

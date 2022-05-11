@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-
 import 'package:get/get.dart';
+import 'package:tachidesk_sorayomi/app/modules/browse/controllers/browse_controller.dart';
+import 'package:tachidesk_sorayomi/app/modules/updates/controllers/updates_controller.dart';
 
+import '../../library/controllers/library_controller.dart';
 import '../controllers/home_controller.dart';
 
 class SmallScreenNavigationBar extends StatelessWidget {
@@ -19,7 +20,6 @@ class SmallScreenNavigationBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<HomeController>(
       builder: (controller) => ScrollToHideWidgetState(
-        scrollcontroller: controller.scrollController,
         child: NavigationBarTheme(
           data: NavigationBarThemeData(
             labelTextStyle: MaterialStateProperty.all(
@@ -131,23 +131,19 @@ class SmallScreenNavigationBar extends StatelessWidget {
 class ScrollToHideWidgetState
     extends GetView<ScrollToHideWidgetStateController> {
   final Widget child;
-  final ScrollController scrollcontroller;
+
   final Duration duration;
   final double height;
 
   const ScrollToHideWidgetState(
       {Key? key,
       required this.child,
-      required this.scrollcontroller,
       this.duration = const Duration(milliseconds: 200),
       this.height = kBottomNavigationBarHeight})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    Get.put(ScrollToHideWidgetStateController(
-      scrollcontroller: scrollcontroller,
-    ));
     return Obx(
       () => AnimatedContainer(
         duration: duration,
@@ -161,27 +157,46 @@ class ScrollToHideWidgetState
 }
 
 class ScrollToHideWidgetStateController extends GetxController {
-  final ScrollController scrollcontroller;
-
-  ScrollToHideWidgetStateController({required this.scrollcontroller});
+  final libraryControllerscroll = Get.find<LibraryController>();
+  final updatesControllerscroll = Get.find<UpdatesController>();
+  final browseControllerscroll = Get.find<BrowseController>();
 
   RxBool isVisible = true.obs;
   @override
   void onInit() {
-    scrollcontroller.addListener(listen);
-
+    browseControllerscroll.scrollController.addListener(listen);
+    libraryControllerscroll.scrollController.addListener(listen2);
+    updatesControllerscroll.scrollController.addListener(listen3);
     super.onInit();
   }
 
   @override
   void dispose() {
-    scrollcontroller.removeListener(listen);
+    browseControllerscroll.scrollController.removeListener(listen);
+    libraryControllerscroll.scrollController.removeListener(listen2);
+    updatesControllerscroll.scrollController.removeListener(listen3);
 
     super.dispose();
   }
 
   void listen() {
-    if (scrollcontroller.position.pixels >= 68) {
+    if (browseControllerscroll.scrollController.position.pixels >= 68) {
+      hide();
+    } else {
+      show();
+    }
+  }
+
+  void listen2() {
+    if (libraryControllerscroll.scrollController.position.pixels >= 68) {
+      hide();
+    } else {
+      show();
+    }
+  }
+
+  void listen3() {
+    if (updatesControllerscroll.scrollController.position.pixels >= 68) {
       hide();
     } else {
       show();
