@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:get/get.dart';
-import 'package:pinch_zoom_image_last/pinch_zoom_image_last.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../../../../../generated/locales.g.dart';
